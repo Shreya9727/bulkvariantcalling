@@ -1,0 +1,17 @@
+repository_type: pipeline
+
+nf_core_version: 4.1.0
+
+lint: {}
+
+template:
+  org: nf-core
+  name: bulkvariantcalling
+  description: Bulk variant calling using nf-core
+  author: Shreya
+  version: 1.0.0dev
+  force: true
+  outdir: .
+  skip_features:
+    - gpu
+  is_nfcore: true
