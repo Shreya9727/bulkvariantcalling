@@ -21,7 +21,7 @@
 
 ## Introduction
 
-**nf-core/bulkvariantcalling** is a bioinformatics pipeline that ...
+**nf-core/bulkvariantcalling** is a simple classical bioinformatics pipeline that can be used to call variants from bulk sequencing data
 
 <!-- TODO nf-core:
    Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
@@ -38,8 +38,7 @@
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/get_started/environment_setup/overview) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/get_started/run-your-first-pipeline) with `-profile test` before running the workflow on actual data.
 
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
+
 
 First, prepare a samplesheet with your input data that looks as follows:
 
@@ -60,7 +59,7 @@ Now, you can run the pipeline using:
 
 ```bash
 nextflow run nf-core/bulkvariantcalling \
-   -profile <docker/singularity/.../institute> \
+   --profile test,conda \
    --input samplesheet.csv \
    --outdir <OUTDIR>
 ```
