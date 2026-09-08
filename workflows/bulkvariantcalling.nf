@@ -56,9 +56,9 @@ workflow BULKVARIANTCALLING {
 	    false
     )
 
-    GATK4_CREATESEQUENCEDICTIONARY(ch_fasta_meta)   // <-- you still need this call
+    GATK4_CREATESEQUENCEDICTIONARY(ch_fasta_meta)   
 
-    // Only NOW, after both processes above have been called, can you build these:
+   
     ch_fai_meta = SAMTOOLS_FAIDX.out.fai.map { meta, fai -> [[id: 'genome'], fai] }.first()
     ch_dict_meta = GATK4_CREATESEQUENCEDICTIONARY.out.dict.map { meta, dict -> [[id: 'genome'], dict] }.first()
 
@@ -71,8 +71,7 @@ workflow BULKVARIANTCALLING {
 
     ch_markdup_bam_bai = GATK4_MARKDUPLICATES.out.bam
 	    .join(GATK4_MARKDUPLICATES.out.bai)
-	    .map { meta, bam, bai -> [ meta, bam, bai, [], [] ] }   // pad: no intervals, no dragstr model
-
+	    .map { meta, bam, bai -> [ meta, bam, bai, [], [] ] }   
     GATK4_HAPLOTYPECALLER(
 	    ch_markdup_bam_bai,
 	    ch_fasta_meta,
@@ -85,7 +84,7 @@ workflow BULKVARIANTCALLING {
     MULTIQC(
 	    FASTQC.out.zip.mix(GATK4_MARKDUPLICATES.out.metrics)
 	        .map { meta, files -> files }   // drop meta, keep just the file(s)
-	        .flatten()                       // FASTQC's zip is a list of 2 per sample — flatten it out
+	        .flatten()                       
 	        .collect()
 	        .map { files ->
 	            [
@@ -130,32 +129,7 @@ workflow BULKVARIANTCALLING {
             newLine: true
         )
 
-    //
-    // MODULE: MultiQC
-    //
-    //ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
-    //def ch_summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
-    //def ch_workflow_summary = channel.value(paramsSummaryMultiqc(ch_summary_params))
-    //ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    //def ch_multiqc_custom_methods_description = multiqc_methods_description
-    //    ? file(multiqc_methods_description, checkIfExists: true)
-    //    : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-    //def ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
-    //ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
-    //MULTIQC(
-    //    ch_multiqc_files.flatten().collect().map { files ->
-    //        [
-    //            [id: 'bulkvariantcalling'],
-    //            files,
-    //            multiqc_config
-    //                ? file(multiqc_config, checkIfExists: true)
-    //                : file("${projectDir}/assets/multiqc_config.yml", checkIfExists: true),
-    //            multiqc_logo ? file(multiqc_logo, checkIfExists: true) : [],
-    //            [],
-    //            [],
-    //        ]
-    //    }
-    //)
+    
     emit:multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
     versions       = ch_versions                 // channel: [ path(versions.yml) ]
 }
