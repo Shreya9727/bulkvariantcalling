@@ -1,2 +1,2 @@
 sample,fastq_1,fastq_2
-sample1,/mnt/d/Shreya/nextflow/nextflow_simple_tutorial/nf-variant-calling/nf-variant-calling/data/sample1_R1.fastq.gz,/mnt/d/Shreya/nextflow/nextflow_simple_tutorial/nf-variant-calling/nf-variant-calling/data/sample1_R2.fastq.gz
+sample1,d/nextflow/nextflow_simple_tutorial/nf-variant-calling/nf-variant-calling/data/sample1_R1.fastq.gz,d/nextflow/nextflow_simple_tutorial/nf-variant-calling/nf-variant-calling/data/sample1_R2.fastq.gz
